@@ -1,0 +1,31 @@
+a game where sprites fall and are collected by a y-constant sprite (player) that moves along the x-axis.
+points are gained when the player collides with the falling sprites
+
+import pygame and random
+
+main function
+there is a background in jpg or png
+
+class for sprit
+define and initialize
+super initialize
+image for sprit
+add other images for others sprits (ciera missed, 7 down, Mtn. Don't, maybe slushie for freeze time)
+
+class for game, simpleGE, Scene)
+	initialize, super
+	set image
+	simpleGE.sound (wav format)
+	start with 1 sprit (change eventually)
+
+
+class for ecdonald's cup
+	define and initialize
+		super initialize
+		image for cup
+
+	define process
+		how does it move - left & right arrow keys, A & D keys respectively
+		wraps around screen, not bounce/boundaries
+		sound effect when collide with other sprites (open fresh bottle of pop)
+
