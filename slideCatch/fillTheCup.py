@@ -12,6 +12,14 @@ class EcDonalds(simpleGE.Sprite):
         super().__init__(scene)
         self.setImage("cup.png")
         self.position = (320, 400)
+        self.moveSpeed = 5
+        
+    def process(self):
+        if self.isKeyPressed(pygame.K_LEFT):
+            self.x -= self.moveSpeed
+        if self.isKeyPressed(pygame.K_RIGHT):
+            self.x += self.moveSpeed
+            #add A and D later
 
 class Game(simpleGE.Scene):
     def __init__(self):
@@ -21,6 +29,7 @@ class Game(simpleGE.Scene):
         
         self.sprites = [self.cup]
         
+    
 def main():
     game = Game()
     game.start()
