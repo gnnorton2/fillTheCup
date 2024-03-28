@@ -7,10 +7,30 @@ Created on Tue Mar 26 10:59:25 2024
 
 import pygame, random, simpleGE
 
+class Sprit(simpleGE.Sprite):
+    def __init__(self, scene):
+        super().__init__(scene)
+        self.setImage("sprit.png")
+        self.minSpeed = 2
+        self.maxSpeed = 9
+        
+        self.reset()
+        
+    def reset(self):
+        self.y = 10
+        self.x = random.randint(0, self.screenWidth)
+       #speed
+        self.dy = random.randint(self.minSpeed, self.maxSpeed)
+     
+    def checkBounds(self):
+        if self.bottom > self.screenHeight:
+            self.reset()
+            
+
 class EcDonalds(simpleGE.Sprite):
     def __init__(self, scene):
         super().__init__(scene)
-        self.setImage("cup.png")
+        self.setImage("ecup.png")
         self.position = (320, 400)
         self.moveSpeed = 5
         
@@ -20,14 +40,16 @@ class EcDonalds(simpleGE.Sprite):
         if self.isKeyPressed(pygame.K_RIGHT):
             self.x += self.moveSpeed
             #add A and D later
+            
 
 class Game(simpleGE.Scene):
     def __init__(self):
         super().__init__()
         self.setImage("bubbles.png")
-        self.cup = EcDonalds(self)
-        
-        self.sprites = [self.cup]
+        self.ecup = EcDonalds(self)
+        self.sprit = Sprit(self)
+        self.sprites = [self.ecup, 
+                        self.sprit]
         
     
 def main():
