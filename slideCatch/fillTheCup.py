@@ -48,15 +48,23 @@ class Game(simpleGE.Scene):
         self.setImage("bubbles.png")
         
         self.sndSprit = simpleGE.Sound("spicywater.wav")
+        
+        numSprits = 10
+        
         self.ecup = EcDonalds(self)
-        self.sprit = Sprit(self)
+        
+        self.sprits = []
+        for i in range(numSprits):
+            self.sprits.append(Sprit(self))
+            
         self.sprites = [self.ecup, 
-                        self.sprit]
+                        self.sprits]
     
     def process(self):
-        if self.sprit.collidesWith(self.ecup):
-            self.sprit.reset()
-            self.sndSprit.play()
+        for sprit in self.sprits:
+            if sprit.collidesWith(self.ecup):
+                sprit.reset()
+                self.sndSprit.play()
     
 def main():
     game = Game()
