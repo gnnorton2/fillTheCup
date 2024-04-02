@@ -97,12 +97,17 @@ class Game(simpleGE.Scene):
             self.stop()
     
 class Instructions(simpleGE.Scene):
-    def __init__(self):
+    def __init__(self, pastScore):
         super().__init__()
+        
+        
+        self.pastScore = pastScore
+        
+        
         self.setImage("bubbles.png")
         
         self.response = "Quit"
-        self.pastScore = 0
+        
         self.howTo = simpleGE.MultiLabel()
         self.howTo.textLines = [
             "You just got a job at EcDonald's.",
@@ -133,12 +138,14 @@ class Instructions(simpleGE.Scene):
         self.pastScoreLabel.text = "Last Score: 0"
         self.pastScoreLabel.center = (320, 450)
     
-        
+        self.pastScoreLabel.text = f"Last score: {self.pastScore}"
         
         self.sprites = [self.howTo,
                         self.btnPlay,
                         self.btnQuit,
                         self.pastScoreLabel]
+        
+    
         
     def process(self):
         if self.btnPlay.clicked:
@@ -152,15 +159,18 @@ class Instructions(simpleGE.Scene):
     
 def main():
     keepGoing = True
+    lastScore = 0
     while keepGoing:
+       
+        instructions = Instructions(lastScore)
         
-        instructions = Instructions()
         instructions.start()
-        print(instructions.response)
+      #  print(instructions.response)
     
         if instructions.response == "Play":    
             game = Game()
             game.start()
+            lastScore = game.score
         else:
             keepGoing = False
 
