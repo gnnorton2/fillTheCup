@@ -40,7 +40,18 @@ class EcDonalds(simpleGE.Sprite):
         if self.isKeyPressed(pygame.K_RIGHT):
             self.x += self.moveSpeed
             #add A and D later
-            
+   
+class ScoreLabel(simpleGE.Label):
+    def __init__(self):
+        super().__init__()
+        self.text = "Score: 0"
+        self.center = (100, 30)
+
+class TimeLabel(simpleGE.Label):
+    def __init__(self):
+        super().__init__()
+        self.text = "Time left: 10"
+        self.center = (530, 30)
 
 class Game(simpleGE.Scene):
     def __init__(self):
@@ -51,6 +62,14 @@ class Game(simpleGE.Scene):
         
         numSprits = 10
         
+        
+        self.timer = simpleGE.Timer()
+        self.timer.totalTime = 10
+        self.timeLabel = TimeLabel()
+        
+        self.scoreLabel = ScoreLabel()
+        self.score = 0
+        
         self.ecup = EcDonalds(self)
         
         self.sprits = []
@@ -58,13 +77,24 @@ class Game(simpleGE.Scene):
             self.sprits.append(Sprit(self))
             
         self.sprites = [self.ecup, 
-                        self.sprits]
+                        self.sprits,
+                        self.scoreLabel,
+                        self.timeLabel]
+    
+    
     
     def process(self):
         for sprit in self.sprits:
             if sprit.collidesWith(self.ecup):
                 sprit.reset()
                 self.sndSprit.play()
+                self.score += 1
+                self.scoreLabel.text = f"Score: {self.score}"
+                
+        self.timeLabel.text = f"Time left: {self.timer.getTimeLeft():.2f}"
+        if self.timer.getTimeLeft() < 0:
+            print(f"Score: {self.score}")
+            self.stop()
     
 def main():
     game = Game()
