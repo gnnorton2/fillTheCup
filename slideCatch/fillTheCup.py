@@ -7,6 +7,25 @@ Created on Tue Mar 26 10:59:25 2024
 
 import pygame, random, simpleGE
 
+class Blast(simpleGE.Sprite):
+    def __init__(self, scene):
+        super().__init__(scene)
+        self.setImage("brBlast.png")
+        self.minSpeed = 10
+        self.maxSpeed = 20
+        
+        self.reset()
+        
+    def reset(self):
+        self.y = 10
+        self.x = random.randint(0, self.screenWidth)
+       #speed
+        self.dy = random.randint(self.minSpeed, self.maxSpeed)
+     
+    def checkBounds(self):
+        if self.bottom > self.screenHeight:
+            self.reset()
+
 class Mtn(simpleGE.Sprite):
     def __init__(self, scene):
         super().__init__(scene)
@@ -120,11 +139,14 @@ class Game(simpleGE.Scene):
         self.sndCiera = simpleGE.Sound("spicywater.wav")
         self.sndSeven = simpleGE.Sound("spicywater.wav")
         self.sndMtn = simpleGE.Sound("ew.wav")
+        self.sndBlast = simpleGE.Sound("freeze.wav")
+        #add brblast sound
         
         numSprits = 3
         numCieras = 3
         numSevens = 2
         numMtns = 2
+        numBlasts = 1
         
         
         self.timer = simpleGE.Timer()
@@ -152,11 +174,16 @@ class Game(simpleGE.Scene):
         for i in range(numMtns):
             self.mtns.append(Mtn(self))
             
+        self.blasts = []
+        for i in range(numBlasts):
+            self.blasts.append(Blast(self))
+            
         self.sprites = [self.ecup, 
                         self.sprits,
                         self.cieras,
                         self.sevens,
                         self.mtns,
+                        self.blasts,
                         self.scoreLabel,
                         self.timeLabel]
     
@@ -190,6 +217,14 @@ class Game(simpleGE.Scene):
                 self.sndMtn.play()
                 self.score -= 1
                 self.scoreLabel.text = f"Score: {self.score}"
+        
+        for blast in self.blasts:
+            if blast.collidesWith(self.ecup):
+                blast.reset()
+                self.sndBlast.play()
+                self.timer.totalTime += 3
+                #self.scoreLabel.text = f"Score: {self.score}"
+        
                 
         self.timeLabel.text = f"Time left: {self.timer.getTimeLeft():.2f}"
         if self.timer.getTimeLeft() < 0:
