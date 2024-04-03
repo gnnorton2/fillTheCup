@@ -141,6 +141,7 @@ class Game(simpleGE.Scene):
         super().__init__()
         self.setImage("bubbles.png")
         
+        
         self.sndSprit = simpleGE.Sound("spicywater.wav")
         self.sndCiera = simpleGE.Sound("spicywater.wav")
         self.sndSeven = simpleGE.Sound("spicywater.wav")
@@ -152,7 +153,7 @@ class Game(simpleGE.Scene):
         numSprits = 3
         numCieras = 3
         numSevens = 2
-        numMtns = 4
+        numMtns = 3
         numBlasts = 1
         
         
@@ -229,7 +230,7 @@ class Game(simpleGE.Scene):
                 self.sndMtn.play()
                 self.score -= 1
                 self.scoreLabel.text = f"Score: {self.score}"
-                self.timer.totalTime -= 3
+                self.timer.totalTime -= 2
         
         for blast in self.blasts:
             if blast.collidesWith(self.ecup):
@@ -245,8 +246,11 @@ class Game(simpleGE.Scene):
             print(f"Score: {self.score}")
             self.stop()
             
-        if self.score > 20:
+        if self.score > 15:
             self.sndRick.play()
+            self.setImage("rick.png")
+            
+           
             
     
 class Instructions(simpleGE.Scene):
