@@ -7,6 +7,8 @@ Created on Tue Mar 26 10:59:25 2024
 
 import pygame, random, simpleGE
 
+
+    
 class Blast(simpleGE.Sprite):
     def __init__(self, scene):
         super().__init__(scene)
@@ -145,6 +147,7 @@ class Game(simpleGE.Scene):
         self.sndMtn = simpleGE.Sound("ew.wav")
         self.sndBlast = simpleGE.Sound("freeze.wav")
         #add brblast sound
+        self.sndRick = simpleGE.Sound("roll.wav")
         
         numSprits = 3
         numCieras = 3
@@ -160,6 +163,8 @@ class Game(simpleGE.Scene):
         self.scoreLabel = ScoreLabel()
         self.score = 0
         
+                
+                
         
         self.ecup = EcDonalds(self)
         
@@ -182,6 +187,8 @@ class Game(simpleGE.Scene):
         self.blasts = []
         for i in range(numBlasts):
             self.blasts.append(Blast(self))
+            
+        
             
         self.sprites = [self.ecup, 
                         self.sprits,
@@ -231,11 +238,16 @@ class Game(simpleGE.Scene):
                 self.timer.totalTime += 3
                 #self.scoreLabel.text = f"Score: {self.score}"
         
+        
                 
         self.timeLabel.text = f"Time left: {self.timer.getTimeLeft():.2f}"
         if self.timer.getTimeLeft() < 0:
             print(f"Score: {self.score}")
             self.stop()
+            
+        if self.score > 20:
+            self.sndRick.play()
+            
     
 class Instructions(simpleGE.Scene):
     def __init__(self, pastScore):
