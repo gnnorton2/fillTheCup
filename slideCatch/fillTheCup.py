@@ -7,6 +7,44 @@ Created on Tue Mar 26 10:59:25 2024
 
 import pygame, random, simpleGE
 
+class Mtn(simpleGE.Sprite):
+    def __init__(self, scene):
+        super().__init__(scene)
+        self.setImage("mtnDont.png")
+        self.minSpeed = 2
+        self.maxSpeed = 9
+        
+        self.reset()
+        
+    def reset(self):
+        self.y = 10
+        self.x = random.randint(0, self.screenWidth)
+       #speed
+        self.dy = random.randint(self.minSpeed, self.maxSpeed)
+     
+    def checkBounds(self):
+        if self.bottom > self.screenHeight:
+            self.reset()
+    
+class Seven(simpleGE.Sprite):
+    def __init__(self, scene):
+        super().__init__(scene)
+        self.setImage("sevenDown.png")
+        self.minSpeed = 2
+        self.maxSpeed = 9
+        
+        self.reset()
+        
+    def reset(self):
+        self.y = 10
+        self.x = random.randint(0, self.screenWidth)
+       #speed
+        self.dy = random.randint(self.minSpeed, self.maxSpeed)
+     
+    def checkBounds(self):
+        if self.bottom > self.screenHeight:
+            self.reset()
+
 class Ciera(simpleGE.Sprite):
     def __init__(self, scene):
         super().__init__(scene)
@@ -59,6 +97,7 @@ class EcDonalds(simpleGE.Sprite):
         if self.isKeyPressed(pygame.K_RIGHT):
             self.x += self.moveSpeed
             #add A and D later
+            
    
 class ScoreLabel(simpleGE.Label):
     def __init__(self):
@@ -79,9 +118,13 @@ class Game(simpleGE.Scene):
         
         self.sndSprit = simpleGE.Sound("spicywater.wav")
         self.sndCiera = simpleGE.Sound("spicywater.wav")
+        self.sndSeven = simpleGE.Sound("spicywater.wav")
+        self.sndMtn = simpleGE.Sound("ew.wav")
         
-        numSprits = 5
-        numCieras = 5
+        numSprits = 3
+        numCieras = 3
+        numSevens = 2
+        numMtns = 2
         
         
         self.timer = simpleGE.Timer()
@@ -101,9 +144,19 @@ class Game(simpleGE.Scene):
         for i in range(numCieras):
             self.cieras.append(Ciera(self))
             
+        self.sevens = []
+        for i in range(numSevens):
+            self.sevens.append(Seven(self))
+            
+        self.mtns = []
+        for i in range(numMtns):
+            self.mtns.append(Mtn(self))
+            
         self.sprites = [self.ecup, 
                         self.sprits,
                         self.cieras,
+                        self.sevens,
+                        self.mtns,
                         self.scoreLabel,
                         self.timeLabel]
     
@@ -122,6 +175,20 @@ class Game(simpleGE.Scene):
                 ciera.reset()
                 self.sndCiera.play()
                 self.score += 1
+                self.scoreLabel.text = f"Score: {self.score}"
+                
+        for seven in self.sevens:
+            if seven.collidesWith(self.ecup):
+                seven.reset()
+                self.sndSeven.play()
+                self.score += 1
+                self.scoreLabel.text = f"Score: {self.score}"
+                
+        for mtn in self.mtns:
+            if mtn.collidesWith(self.ecup):
+                mtn.reset()
+                self.sndMtn.play()
+                self.score -= 1
                 self.scoreLabel.text = f"Score: {self.score}"
                 
         self.timeLabel.text = f"Time left: {self.timer.getTimeLeft():.2f}"
