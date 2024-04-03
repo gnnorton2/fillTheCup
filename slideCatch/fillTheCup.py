@@ -11,8 +11,8 @@ class Blast(simpleGE.Sprite):
     def __init__(self, scene):
         super().__init__(scene)
         self.setImage("brBlast.png")
-        self.minSpeed = 10
-        self.maxSpeed = 20
+        self.minSpeed = 2
+        self.maxSpeed = 9
         
         self.reset()
         
@@ -116,6 +116,10 @@ class EcDonalds(simpleGE.Sprite):
         if self.isKeyPressed(pygame.K_RIGHT):
             self.x += self.moveSpeed
             #add A and D later
+        if self.isKeyPressed(pygame.K_a):
+            self.x -= self.moveSpeed
+        if self.isKeyPressed(pygame.K_d):
+            self.x += self.moveSpeed
             
    
 class ScoreLabel(simpleGE.Label):
@@ -145,7 +149,7 @@ class Game(simpleGE.Scene):
         numSprits = 3
         numCieras = 3
         numSevens = 2
-        numMtns = 2
+        numMtns = 4
         numBlasts = 1
         
         
@@ -155,6 +159,7 @@ class Game(simpleGE.Scene):
         
         self.scoreLabel = ScoreLabel()
         self.score = 0
+        
         
         self.ecup = EcDonalds(self)
         
@@ -217,6 +222,7 @@ class Game(simpleGE.Scene):
                 self.sndMtn.play()
                 self.score -= 1
                 self.scoreLabel.text = f"Score: {self.score}"
+                self.timer.totalTime -= 3
         
         for blast in self.blasts:
             if blast.collidesWith(self.ecup):
