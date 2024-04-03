@@ -246,11 +246,15 @@ class Game(simpleGE.Scene):
             print(f"Score: {self.score}")
             self.stop()
             
-        if self.score > 15:
+        if self.score == 15:
             self.sndRick.play()
             self.setImage("rick.png")
-            
-           
+            self.timer.start()
+            if self.score == 50:
+                self.sndRick.play()
+                self.timer.start()
+                
+                
             
     
 class Instructions(simpleGE.Scene):
