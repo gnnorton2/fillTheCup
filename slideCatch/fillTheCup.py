@@ -7,6 +7,25 @@ Created on Tue Mar 26 10:59:25 2024
 
 import pygame, random, simpleGE
 
+class Ciera(simpleGE.Sprite):
+    def __init__(self, scene):
+        super().__init__(scene)
+        self.setImage("cieraMissed.png")
+        self.minSpeed = 2
+        self.maxSpeed = 9
+        
+        self.reset()
+        
+    def reset(self):
+        self.y = 10
+        self.x = random.randint(0, self.screenWidth)
+       #speed
+        self.dy = random.randint(self.minSpeed, self.maxSpeed)
+     
+    def checkBounds(self):
+        if self.bottom > self.screenHeight:
+            self.reset()
+
 class Sprit(simpleGE.Sprite):
     def __init__(self, scene):
         super().__init__(scene)
@@ -59,8 +78,10 @@ class Game(simpleGE.Scene):
         self.setImage("bubbles.png")
         
         self.sndSprit = simpleGE.Sound("spicywater.wav")
+        self.sndCiera = simpleGE.Sound("spicywater.wav")
         
-        numSprits = 10
+        numSprits = 5
+        numCieras = 5
         
         
         self.timer = simpleGE.Timer()
@@ -76,8 +97,13 @@ class Game(simpleGE.Scene):
         for i in range(numSprits):
             self.sprits.append(Sprit(self))
             
+        self.cieras = []
+        for i in range(numCieras):
+            self.cieras.append(Ciera(self))
+            
         self.sprites = [self.ecup, 
                         self.sprits,
+                        self.cieras,
                         self.scoreLabel,
                         self.timeLabel]
     
@@ -88,6 +114,13 @@ class Game(simpleGE.Scene):
             if sprit.collidesWith(self.ecup):
                 sprit.reset()
                 self.sndSprit.play()
+                self.score += 1
+                self.scoreLabel.text = f"Score: {self.score}"
+                
+        for ciera in self.cieras:
+            if ciera.collidesWith(self.ecup):
+                ciera.reset()
+                self.sndCiera.play()
                 self.score += 1
                 self.scoreLabel.text = f"Score: {self.score}"
                 
